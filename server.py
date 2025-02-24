@@ -7,17 +7,17 @@ app = Flask(__name__)
 def index():
     return "Hello World!"
 
-@app.route('/page-html')
+@app.route('/page')
 def page_html():
-    return "<html><body>This is an <b>html</b> page</body></html>"
+    return "<html><body style='background-color: yellow;'>This is an <b>html</b> page</body></html>"
 
-@app.route('/another-page-html')
+@app.route('/another-page')
 def another_page_html():
     with open('another-page.html') as f:
         page = f.read()
     return page
 
-@app.route('/somehow-dynamic-page-html')
+@app.route('/somehow-dynamic-page')
 def somehow_dynamic_page_html():
     # call url http://localhost:5000/somehow-dynamic-page-html?page-name=another-page
     page_name = request.args.get('page-name')
@@ -25,7 +25,7 @@ def somehow_dynamic_page_html():
         page = f.read()
     return page
 
-@app.route('/dynamic-page-html')
+@app.route('/dynamic-page')
 def dynamic_page_html():
     person_name = request.args.get('person-name')
     with open('dynamic-page.html') as f:
@@ -33,14 +33,14 @@ def dynamic_page_html():
     filled_page = chevron.render(page, {'name': person_name})
     return filled_page
 
-@app.route('/image-png')
-def image_png():
-    with open('bachelier.png', 'rb') as f:
+@app.route('/image')
+def get_image():
+    with open('smiley.png', 'rb') as f:
         data = f.read()
     return Response(data, mimetype='image/png')
 
-@app.route('/data-json')
-def data_json():
+@app.route('/data')
+def get_data():
     data = {
         "hello": "world",
         "age": 4000000000,
