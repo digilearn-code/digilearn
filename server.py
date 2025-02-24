@@ -2,13 +2,14 @@ import chevron
 import mariadb
 from flask import Flask, Response, jsonify, request
 
-conn = mariadb.connect(
-    user="digilearn",
-    password="di33ere",
-    host="127.0.0.1",
-    port=3306,
-    database="digilearn"
-)
+connection_parameters = {
+    'user': 'digilearn',
+    'password': 'di33ere',
+    'host': '127.0.0.1',
+    'port': 3306,
+    'database': 'digilearn',
+}
+
 app = Flask(__name__)
 
 
@@ -69,9 +70,10 @@ def get_data():
 
 @app.route('/database-data')
 def get_database_data():
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, denomination FROM countries")
-    return jsonify(cursor.fetchall())
+    with mariadb.connect(**connection_parameters) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, denomination FROM countries")
+        return jsonify(cursor.fetchall())
 
 
 if __name__ == '__main__':
